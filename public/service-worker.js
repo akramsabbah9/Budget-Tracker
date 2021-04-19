@@ -13,9 +13,7 @@ const FILES_TO_CACHE = [
 self.addEventListener("fetch", event => {
     console.log("fetch request: " + event.request.url);
     event.respondWith(
-        caches.match(event.request).then(request => {
-            return request || fetch(event.request);
-        })
+        caches.match(event.request).then(request => request || fetch(event.request))
     );
 });
 
@@ -32,9 +30,7 @@ self.addEventListener("activate", event => {
     event.waitUntil(
         caches.keys().then(keyList => {
             // filter out keys that has this app's prefix to create keeplist
-            let cacheKeeplist = keyList.filter(key => {
-                return key.indexOf(APP_PREFIX);
-            });
+            let cacheKeeplist = keyList.filter(key => key.indexOf(APP_PREFIX));
 
             // add current cache name to keeplist
             cacheKeeplist.push(CACHE_NAME);
